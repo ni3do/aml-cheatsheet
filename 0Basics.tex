@@ -19,6 +19,14 @@ General p-norm: $\norm{ x }_p = (\sum_{i=1}^n |x_i|^p)^{1/p}$
 \item $Cov[aX,bY]{=}abCov[X,Y]$ \\
 \item $K_{\bm{XY}} = cov(X,Y) = E[XY^T] - E[X]E[Y^T]$
 \end{inparaitem}
+\subsection*{Gaussian}
+\begin{inparaitem}[\color{red}\textbullet]
+    \item $p(x) = \frac{1}{\sqrt{(2\pi)^n \mid \Sigma \mid}}\exp (-\frac{1}{2}(x-\mu)^\top \Sigma^{-1} (x-\mu))$
+    \item $MX \sim \mathcal{N}(M\mu,M \Sigma M^\top)$ 
+    \item $X\mid (Y=a) \sim  \mathcal{N}(\mu_X+\Sigma_{XY}\Sigma_{YY}^{-1}(a-\mu_Y),\Sigma_{XX}-\Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YX})$
+    \item Subset of vars: $X_A \sim \mathcal{N}(\mu_A, \Sigma_{AA})$
+    \item $X+Y = \mathcal{N}(\mu_X+\mu_Y, \Sigma_X + \Sigma_Y$ if independent, else use joint dist. ($[1,1] \cdot [X,Y]^\top$)
+\end{inparaitem}
 \subsection*{Calculus}
 \begin{inparaitem}[\color{red}\textbullet]
 	\item Part.: $\int u(x)v'(x) dx = u(x)v(x) - \int v(x)u'(x) dx$\\
@@ -33,7 +41,8 @@ General p-norm: $\norm{ x }_p = (\sum_{i=1}^n |x_i|^p)^{1/p}$
 	\item $\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X}^\top \mathbf{b}) = \mathbf{b}\mathbf{c}^\top$
 	\item $\frac{\partial}{\partial \mathbf{x}}(\| \mathbf{x}-\mathbf{b} \|_2) = \frac{\mathbf{x}-\mathbf{b}}{\|\mathbf{x}-\mathbf{b}\|_2}$ \\
 	\item $\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{x}\|^2_2) = \frac{\partial}{\partial \mathbf{x}} (\|\mathbf{x}^\top \mathbf{x}\|_2) = 2\mathbf{x}$
-	\item $\frac{\partial}{\partial \mathbf{X}}(\|\mathbf{X}\|_F^2) = 2\mathbf{X}$ \\
+	\item $\frac{\partial}{\partial \mathbf{X}}(\|\mathbf{X}\|_F^2) = 2\mathbf{X}$
+     \item $\frac{\partial}{\partial \mathbf{x}}\mathbf{A}^{-1} = -\mathbf{A}^{-1} \frac{\partial \mathbf{A}}{\partial \mathbf{x}} \mathbf{A}^{-1}$\\ 
 	\item $x^T A x = Tr(x^T A x) = Tr(x x^T A) = Tr(A x x^T)$ \\
 	\item $\tfrac{\partial}{\partial A} Tr(AB) {=} B^T$
 	\item $\frac{\partial}{\partial A} log|A| {=} A^{-T}$ \\
@@ -42,10 +51,14 @@ General p-norm: $\norm{ x }_p = (\sum_{i=1}^n |x_i|^p)^{1/p}$
 	\item $\nabla \text{tanh}(x) = 1-\text{tanh}^2(x)$ 
 	\item $tanhx {=} \frac{sinhx}{coshx} {=} \frac{e^{x}-e^{-x}}{e^{x} + e^{x}}$
 \end{inparaitem}
+
 \subsection*{Probability / Statistics}
 \begin{compactdesc}
 	\item[Bayes' Rule]$ P(Y|X) = \frac{P(X|Y)P(Y)}{P(X)}\frac{P(X|Y)P(Y)}{\sum\limits^k_{i=1}P(X|Y_i)P(Y_i)}$\\
-	\item[MGF] $\mathbf{M}_X(t)=\mathbb{E}[e^{\mathbf{t}^T \mathbf{X}}]$, $\mathbf{X}=(X_1,.., X_n) $
+	\item[Moore-Penrose] $TODO$
+    \item[MGF] $\mathbf{M}_X(t)=\mathbb{E}[e^{\mathbf{t}^T \mathbf{X}}]$, $\mathbf{X}=(X_1,.., X_n) $
+    \item[Woodburry] $TODO$
 \end{compactdesc}
+
 \subsection*{Jensen's inequality}
 	X:random variable \& $\varphi$:convex function $\rightarrow$ $\varphi(\mathbb{E}[X]) \leq \mathbb{E}[\varphi(X)]$

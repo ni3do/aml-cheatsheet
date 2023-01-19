@@ -1,0 +1,115 @@
+% -*- root: Main.tex -*-
+\section{Good To Know Stuff}
+\subsection*{Numerical Estimating Methods}
+Actual Risk: $\mathcal{R}(f) := \E_{x,y}[l(y-f(x))]$ \\
+Empiricial Risk: $\hat{\mathcal{R}}(f) = \frac{1}{n}\sum_i l(y_i - f(x_i))$\\
+Generalization Error: $G(f) = |\hat{\mathcal{R}}(f) - \mathcal{R}(f)|$
+
+\subsection*{K-fold cross validation}
+$\hat{f}^{-\nu} \in \argmin_f \frac{1}{|Z^{-\nu}|} \sum_{i \in Z^{-\nu}} (y_i - f(x_i))^2$\\
+$\hat{\mathcal{R}}^{cv} = \frac{1}{n} \sum_i(y_i - \hat{f}^{-\kappa(i)}(x_i))^2$, $k(i)$ is fold $i^{th}$ fold \\
+Problem: systematic tendency to underfit.
+
+\subsection*{Leave-one-out}
+unbiased, high variance \\
+$\hat{f}^{-i} \in \argmin_f \frac{1}{n-1} \sum_{j:j \neq i} L(y_i,f(x_i))$ \\
+$\hat{\mathcal{R}}^{LOOCV} = \frac{1}{n} \sum_i L(y_i, \hat{f}^{-i}(x_i))$
+
+\subsection*{Bootstrapping}
+Resampling with replacement from data $D$ to produce $B$ boostrap datasets $D^{*b}$.  $S(D)$ is expected generalization error of prediction model trained on $D$. Var: $\sigma ^2(S) = \frac{1}{B-1}\sum_{b=1}^B(S(D^{*b})-\bar{S})^2$ with mean: $\hat{R}_{boot}(f)=\bar{S}=\frac{1}{B}\sum_{b=1}^B(\frac{1}{N}\sum_{i=1}^NL(y_i,\hat{f}_{D^{*b}}(x_i)))$ with $\hat{f}_{D^{*b}}(x_i)$ being the prediction model. $\hat{R}_{boot}^{LOO}(f) = \frac{1}{N}\sum_{i=1}^N\frac{1}{|C^{-i}|}\sum_{b\in C^{-i}}L(y_i,\hat{f}_{D^{*b}}(x_i))$ where $C^{-i}$ denotes the set of bootstrap sets not containing data point $i$. Note: $L$ can be $I_{\{c(x_i)\not =y_i\}}$.
+$\hat{R}_{boot}$ is optimistic. Hence use: $\hat{R}^{.0632}=0.368\hat{R}_{boot}+0.632\hat{R}_{boot}^{(LOO)}$. \\
+Prob. not to appear in set: $(1-\frac{1}{n})^n = \frac{1}{e}$ for $n \rightarrow \infty$
+
+\subsection*{Information Criteria}
+$BIC = ln(n)k - 2ln(\hat{L})$, $AIC = 2k - 2ln(\hat{L})$\\
+$TIC = 2trace[I_1(\theta_k)J_1^{-1}(\theta_k)] - 2ln(\hat{L})$, 
+where k: num. params, n: num. data points, likelihood: $\hat{L}=p(X|\theta_k,M)$  
+
+\subsection*{Loss-Functions}
+True class: $y \in \{-1,1\}$, pred. $x \in [-1,1]$\\
+Cross-entropy (log loss): ($y'=\tfrac{(1+y)}{2}$ and $x'=\tfrac{(1+x)}{2}$) $L(y',x') {=} -[y'log(x') {+} (1-y')log(1-x')]$ \\
+Hinge Loss: $L(y,x) = max(0, 1-yx)$ \\
+Perceptron Loss: $L(y,x) = max(0, -yx)$ \\
+Logistic loss: $L(y,x) = log(1 + exp(-yx))$ \\
+Square loss: $L(y,x) = \tfrac{1}{2}(1-yx)^2$ \\
+Exponential loss: $L(y,x) = exp(-yx)$ \\
+Binomial deviance: $L(y,x) = 1 + exp(-2yx)$ \\
+0/1 Loss: $L(y,x) = \mathbb{I}\{sign(x)\neq y\}$
+
+\subsection*{Perceptron} 
+Gradient descent: $a(k+1) = a(k) - \eta(k)\nabla J(a(k))$ \\
+$J(a)\approx J(a(k))+\nabla J^T(a-a(k)) + \tfrac{1}{2}(a-a(k))^T H (a-a(k))$, $H{=}\frac{\partial^2 J}{\partial a_i \partial a_j}$ \\
+$2^{nd}$ order algorithm: $\eta_{opt} = \frac{\norm{\nabla J}^2}{\nabla J^T H \nabla J}$ \\
+Newton's rule: $a(k+1){=}a(k){-}H^{{-}1}\nabla J$\\
+Perceptron criteria: $J_p(a)=\sum_{\widetilde{x}\in\widetilde{\mathcal{X}}^{mc}} (-a^T \widetilde{x})$ \\
+Perceptron rule: $a(k+1)=a(k)+\eta(k)\sum_{\widetilde{x}\in\widetilde{\mathcal{X}}^{mc}} \widetilde{x}$ \\
+Perceptron convergence:$\left \| a(k+1)- \alpha \hat a \right \|^{2} = \left \| a(k)- \alpha \hat a \right \|^{2}  + 2(a(k)- \alpha \hat a)^{T} \tilde x^{k} + \left \| \tilde x^{k} \right \|^{2} \leq \left \| a(k)- \alpha \hat a \right \|^{2} -2\alpha \gamma + \beta ^{2}$
+where $\beta^{2} = max_{i}  \left \| \tilde x_{i \in \tilde X^{mc} } \right \| ^{2}$ and $\gamma = min_{i \in \tilde X^{mc} } (\hat a^{T} \tilde x_{i}) > 0 $ for $\alpha= \beta^{2} / \gamma$  then $k_{0}= \alpha^{2}\left \|\hat a \right \|^{2} / \beta^{2}=  \beta^{2}\left \|\hat a \right \|^{2} / \gamma^{2}$
+
+\subsection*{Gaussian Mixtures}
+	Estimate $\hat{\theta} = \{\mu_1,...,\mu_k, \Sigma_1,...,\Sigma_k\}$ that maximize the likelihood of sample feature vectors $\mathcal{X} = \{x_1,..., x_n \}$: \\
+	$p(\mathcal{X} | \pi_i, ..., \pi_k, \theta_1, ..., \theta_k) = \prod_{x \in \mathcal{X}} \sum_{c\leq k}  \pi_c p(x|\theta_c)$\\
+	Log-Likelihood: $L(\mathcal{X} | \pi, \theta) = \sum_{x\in \mathcal{X}}
+	 \log \sum_{c \leq k} \pi_c p(x|\theta_c)$
+	
+\subsection*{Expectation Maximization}
+$L(\X,M|\theta) = \sum_{x \in \X} \sum_{c=1}^k M_{xc} \log(\pi_c P(x|\theta_c)$ \\
+$Q(\theta; \theta^{(j)}) = \E_{M}[L(\X,M|\theta)| \X, \theta^{(j)}]$, M latent variable
+
+$M_{xc} = 1$ if cluster $c$ has generated $x$, else $M_{xc} = 0$
+$\\ \E_M[M_{xc}|\X, \theta^{(j)}] = P(M_{xc}=1) = P(c | x, \theta^{(j)}) = 
+\frac{P(x|c,\theta^{(j)}) P(c|\theta^{(j)})}{P(x|\theta^{(j)})}
+= \frac{\pi_c P(x|c,\theta^{(j)})}{\sum_{c=1}^K \pi_c P(x|c,\theta^{(j)})} 
+=: \gamma_{xc}$
+\begin{algorithmic}[1]
+	\While{not converged}
+	\State E-Step:
+		\tab Compute $\gamma_{xc}$ for all $x, c$
+		\tab Compute $m_c := \sum_x \gamma_{xc}$ for all $c$
+	\State M-Step: max $Q(\theta; \theta^{(j)}) \hspace{5mm} s.t. \sum_c \pi_c = 1$
+    	\vspace{-3mm}
+    	\addtolength{\jot}{-3mm}
+		\begin{align*}
+			\mu_c^{(j+1)} &= \tfrac{\sum_{x \in \mathcal{X}} \gamma_{xc} x}{m_c} \hskip 15pt  
+			\pi_c^{(j+1)} = \tfrac{1}{|\mathcal{X}|} m_c \\
+			\Sigma_c^{(j+1)} &= \tfrac{\sum_{x \in \mathcal{X}} \gamma_{xc}(x-\mu_c)(x-\mu_c)^T}
+				{m_c} 
+		\end{align*}
+        \vspace{-6mm}
+	\EndWhile
+\end{algorithmic}
+
+\textbf{Lagrangian with fixed $\gamma_{xc}$} \mbox{}\\
+$L = \sum_x \sum_c \gamma_{xc} \log(\pi_c P(x|c,\theta_c)) - 
+\lambda(\sum_c \pi_c - 1)$\\
+For GMM: $P(x|c,\theta^{(j)}) = \mathcal{N}(x | \mu_c, \Sigma_c)$
+
+\subsection*{Generative Methods}
+
+\textbf{Naive Bayes} \\
+All features independent.\\
+$
+P(y|x) = \frac{1}{Z} P(y) P(x|y), Z = \sum_{y} P(y) P(x|y) \\
+y = \argmax_{y'} P(y'|x) = \argmax_{y'} \hat{P}(y') \prod_{i=1}^{d} \hat{P}(x_i|y')
+$ \\
+\textbf{Discriminant Function}\\
+$
+f(x) = \log(\frac{P(y=1|x)}{P(y==1|x)}), y=sign(f(x))
+$
+
+\subsection*{Neural Network: Learning features}
+Parameterize the feature maps and optimize over the parameters:\\
+$w^* = \underset{w, \Theta}{\operatorname{argmin}} \sum_{i=1}^n l(y_i, \sum_{j=1}^m w_j \Phi(x_i, \Theta_j))$
+
+\textbf{Reformulating the perceptron} \\
+Ansatz: $w=\sum_{j=1}^n \alpha_j y_j x_j$\\
+$\min \limits_{w\in\mathbb{R}^d} \sum_{i=1}^n \max [0, -y_i w^T x_i]$\\
+$= \min \limits_{\alpha_{1:n}} \sum_{i=1}^n \max [0,-y_i  ( \sum_{j=1}^n \alpha_j y_j x_j  )^T x_i ]$\\
+$= \min \limits_{\alpha_{1:n}} \sum_{i=1}^n \max  [0,- \sum_{j=1}^n \alpha_j y_i y_j x_i^T x_j ]$
+        
+\textbf{Kernelized Perceptron} \\
+1. Initialize $\alpha_1 = ... = \alpha_n = 0$\\
+2. For t do \\
+Pick data $(x_i,y_i) \in_{u.a.r} D$\\
+Predict $\hat{y} = sign(\sum_{j=1}^n \alpha_j y_j k(x_j,x_i))$\\
+If $\hat{y} \not = y_i$ set $\alpha_i = \alpha_i + \eta_t$

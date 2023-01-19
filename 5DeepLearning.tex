@@ -1,0 +1,37 @@
+\section{Deep Learning}
+
+\textbf{Robbins-Monro}: finds root of reg. function \\
+$x_{n+1} = x_n - \alpha_n y_n = x_n - \alpha_n f(x_n)$, where \\
+(1) $\lim_{n\rightarrow \infty} \alpha_n = 0$ {\tiny conv.}, (2) $\sum_{n=1}^\infty \alpha_n = \infty$ {\tiny slow},\\
+(3) $\sum_{n=1}^\infty \alpha_n^2 < \infty$ {\tiny bounded var.}
+
+\textbf{Kiefer-Wolfowitz}: finds min. of reg. function \\
+$x_{n+1} = x_n - \alpha_n \frac{f(x_n + c_n) - f(x_n - c_n)}{2 c_n}$, where \\
+(1), (2) from before, (3) $\lim_{n\rightarrow \infty} c_n = 0$, \\
+(4) $\sum_{n=1}^\infty (\frac{\alpha_n}{c_n})^2 < \infty$
+
+\subsection*{Gradient Descent}
+Taylor: {\footnotesize $f(x_n + \triangle x) = f(x_n) + \nabla f(x_n)^\top \triangle x + \frac{1}{2} \triangle x^\top H \triangle x$} \\
+$\Rightarrow$ optimal step: $x_{n+1} = x_n - \frac{\nabla f^\top \nabla f}{\nabla f^\top H \nabla f} \cdot \nabla f$
+
+\textbf{Newton's Rule}: $x_{n+1} = x_n - H^{-1} \nabla f(x_n)$
+
+\textbf{Momentum}: $y_{n+1} = x_n + \beta \cdot (x_n - x_{n-1})$, \\$x_{n+1} = y_{n+1} - \alpha_n \nabla f(y_{n+1})$
+
+\subsection*{Backpropagation}
+For each unit $j$ on the output layer:\\
+- Compute error signal: $\delta_j = \ell_j'(f_j)$\\
+- For each unit $i$ on layer $L$: $\frac{\partial}{\partial w_{j,i}} = \delta_j v_i$
+
+For each unit $j$ on hidden layer $l=\{L-1,..,1\}$:\\
+- Error signal: $\delta_j = \phi'(z_j) \sum_{i\in Layer_{l+1}} w_{i,j}\delta_i$\\
+- For each unit $i$ on layer $l-1$: $\frac{\partial}{\partial w_{j,i}} = \delta_j v_i$
+
+\subsection*{Autoencoder}
+learns binary encoding or its inverse {\tiny discrete}\\
+learns compressed, distr. repres. (|lin. hidden units| < |in/out units| $\rightarrow PCA$) {\tiny continous}
+
+\textbf{Variational Autoencoder (VAE)}: \\
+Decoder: $p_\Theta (x) = \int p_\Theta (z) p_\Theta (x|z) dz$,\\  Encoder $q_\phi (z|x)$ approx. $p_\Theta (x|z)$ \\
+$\log p_\Theta(x_i) = \mathbb{E}_z [\log p_\Theta(x_i|z)] - \mathbb{E}_z [\log \frac{q_\phi (z|x_i)}{p_\Theta (z)}] + \mathbb{E}_z [\log \frac{q_\phi(z|x_i)}{p_\Theta(z|x_i)}] = \mathcal{L}(x_i, \Theta, \phi) + \mathbb{E}_z [\log \frac{q_\phi(z|x_i)}{p_\Theta(z|x_i)}]$ \\
+\textbf{ELBO}: $log p_\Theta (x_i) \geq \mathcal{L}(x_i, \Theta, \phi)$

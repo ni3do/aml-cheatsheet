@@ -37,20 +37,29 @@ $l(Y|\theta) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log |C_n| - \frac{1}{2} Y^
 Set of hyperparameters $\theta$ determine parameters $C_n$. Gradient descent: $\nabla_{\theta_i}l(Y|\theta) = -\frac{1}{2}tr(C_n^{-1} \frac{\partial C_n}{\partial \theta_i}) + \frac{1}{2} Y^T C_n^{-1} \frac{\partial C_n}{\partial \theta_i} C_n^{-1} Y$
 
 \subsection*{Kernels}
-	$K(x, y) = <\phi(x), \phi(y)>$ for some feature mapping $\phi(x)$\\
-    Psd Gram Matrix: $c^TKc \geq 0, \sum_i\sum_jc_ic_jk(x_i,x_j)\geq 0$\\
-    All principal minors of K need $det \geq 0$;\newline
-	$k(x, y) = k(y, x) ;\hspace{2mm} k(x,x) \geq 0;\hspace{2mm} k(x,x)k(v,v) \geq k(x,y)^2$ 
+%	$K(x, y) = <\phi(x), \phi(y)>$ for some feature mapping $\phi(x)$\\
+%    Psd Gram Matrix: $c^TKc \geq 0, \sum_i\sum_jc_ic_jk(x_i,x_j)\geq 0$\\
+%    All principal minors of K need $det \geq 0$;\newline
+%	$k(x, y) = k(y, x) ;\hspace{2mm} k(x,x) \geq 0;\hspace{2mm} k(x,x)k(v,v) \geq k(x,y)^2$ 
+\begin{comment}
 	Closure Properties: {\tiny psd prop. closed under pointwise limits (since each $K_n$ is a kernel)} \\
     $k(x,y) = k_1(x,y) + k_2(x,y)$, $k(x,y) = k_1(x,y)k_2(x,y)$\\
 	$k(x,y) = f(x)f(y)$, $k(x,y) = k_3(\phi(x),\phi(y))$\\
     $k(x,y) = \exp(\alpha k_1(x,y)), \alpha > 0$, $|X \cap Y| = kernel$\\
 	$k(x,y) = p(k_1(x,y)), \, p(\cdot)$ {\tiny\text{polynomial with pos. coeff.}}\\   
 	$k(x,y)=k_1(x,y)/ \sqrt{(k_1(x,x) k_1(y,y)}$\\
-	Gaussian (rbf): $k(x,y) = \exp( -\tfrac{||x-y||^2}{2\sigma^2})$ {\tiny inf.dim.}\\
-	Sigmoid: $k(x,y) = \tanh(k\cdot x^Ty - b)$ {\tiny\text{not valid for $\forall k,b$}} \\
-	Polynomial: $k(x,y) {=} (x^Ty {+} c)^d$,$d\in N$,$c\geq0$ \\
-	Periodic: $k(x,y) = \sigma ^2 exp(\frac{2\sin ^2 (\pi |x-y|/p)}{\ell ^2})$
+\end{comment}
+
+\textbf{Properties}: symmetry, positive semi-definiteness
+
+Gaussian (rbf): $k(x,y) = \exp( -\tfrac{||x-y||^2}{2\sigma^2})$ {\tiny inf.dim.}\\
+Sigmoid: $k(x,y) = \tanh(k\cdot x^Ty - b)$ {\tiny\text{not valid for $\forall k,b$}} \\
+Polynomial: $k(x,y) = (x^Ty {+} c)^d$,$d\in N$,$c\geq0$ \\
+Periodic: $k(x,y) = \sigma ^2 exp(\frac{2\sin ^2 (\pi |x-y|/p)}{\ell ^2})$
+
+\textbf{Kernel Engineering}:
+$k = k_1 + k_2$, $k = k_1 \cdot k_2$, $k = c \cdot k_1$, $k = f(k_1)$
+, where $c > 0$ and $f$ a polyn. with pos. coeffs. or the exp function
 
 % \subsubsection*{Polynomial kernel}
 % $k_1 = (x^Ty)^m$ represents monomial of deg m \\

@@ -4,30 +4,53 @@
 %Error: $\hat{R}(w) = \sum_{i=1}^n (y_i - w^Tx_i)^2 = ||Xw-y||^2_2$\\
 %Closed form: $w^*=(X^T X)^{-1} X^T y$\\
 %Gradient: $\nabla_w \hat{R}(w) = 2X^T (Xw-y)$
+
+\begin{comment}
 \subsection*{Estimation}
 Consistency: $\hat{\theta_n} \stackrel{\text{\tiny P}}{\rightarrow} \theta$,
 i.e. $\forall\epsilon P \{|\hat{\theta_n}-\theta| \geq\epsilon\} \stackrel{\tiny n \to\infty}{\longrightarrow} 0 $\\
 Asymptotic normality: $\sqrt{N}(\theta - \hat{\theta_n}) \to \mathcal{N}(0, J^{-1}IJ^{-1})$ \\
 Asymptotic efficiency: $\hat{\theta_n}$ has the smallest variance among all possible consistent estimators (for large enough N), i.e. $\lim_{n\to\infty} (V[\hat{\theta_n}]I(\theta))^{-1} = 1$
 	$\hat{\theta}_{MAP} := \argmax_\theta \left \{ \sum_{i=1}^n log(p(x_i | \theta) + log(p(\theta)) \right\}$
+\end{comment}
+
+\subsection*{Logistic Regression}
+\begin{compactdesc}
+	\item[Consistency] $\lim_{n \rightarrow \infty} \Pr(|\hat{\Theta}_n - \Theta| > \epsilon) = 0$
+    \item[Asymptotic Normality] $\hat{\Theta}_n \overset{d}{\rightarrow} \mathcal{N}(\Theta, se^2)$
+    \item[Asympt. Effic.] $\lim_{n \rightarrow \infty} \expec [(\Theta - \hat{\Theta}_n)^2] I_n(\Theta) = 1$
+\end{compactdesc}
+
 \subsection*{Rao-Cramer}
-$\Lambda = \frac{\partial \log \mathbb{P}(x|\theta )}{\partial \theta}$ (score function), $E[\Lambda ]=0$\\
-Fisher information: $I= \mathbb{V}[\Lambda]$ \\
-$J= E[\Lambda^{2}]= -E[\frac{\partial^2 \log \mathbb{P}(x|\theta ) }{\partial \theta \partial \theta ^{T}}]= -E[\frac{\partial \Lambda}{\partial \theta}]$ \\
-variance of an estimator is bounded from below by the inverse of Fisher information \\
-MSE bound: $E[(\hat \theta -\theta )^{2}] \geq \frac{[1 + b^{\prime} (\theta)]^{2}}{n E[\Lambda ^{2}]} + b_{\hat \theta}^{2}$ \\
+Shows in general, unbiased and biased estimators are not optimal.\\
+\textbf{Fisher Info.}: $I_{n}(\Theta) = E\left[\left(\frac{\partial}{\partial \Theta}\log p(X | \Theta)\right)^{2}\right]$ \\
+\textbf{Bound}: $\expec[(\hat{\Theta}- \Theta)^2] \geq \frac{\left(\frac{\partial}{\partial \Theta}\bias(\hat{\Theta})+1\right)^2}{I_n(\Theta)} + \bias(\hat{\Theta})^2$
+
+\subsection*{Residual Sum of Squares (RSS)}
+$\varepsilon_{RSS}(\beta) = \sum_{i} (y_i - x_i^\top \beta)^2 = (y - X\beta)^\top (y - X\beta)$
+$\Rightarrow \hat{\beta} = (X^\top X)^{-1} X^\top \beta$, {\tiny closed-form, non-singular $(X^\top X)$}
+
+%{$\Lambda = \frac{\partial \log \mathbb{P}(x|\theta )}{\partial \theta}$ (score function), $E[\Lambda ]=0$\\
+%Fisher information: $I= \mathbb{V}[\Lambda]$ \\
+%$J= E[\Lambda^{2}]= -E[\frac{\partial^2 \log \mathbb{P}(x|\theta ) }{\partial \theta \partial \theta ^{T}}]= -E[\frac{\partial \Lambda}{\partial \theta}]$ \\
+% variance of an estimator is bounded from below by the inverse of Fisher information \\
+%MSE bound: $E[(\hat \theta -\theta )^{2}] \geq \frac{[1 + b^{\prime} (\theta)]^{2}}{n E[\Lambda ^{2}]} + b_{\hat \theta}^{2}$ \\
 Biased estimators: $var(\hat{\theta}) \geq \frac{[1 + b^{\prime}(\theta)]^2}{I(\theta)}$ \\
 Efficiency: $e(\hat{\theta}) = \frac{I(\theta)^{-1}}{var(\hat{\theta})} \leq 1$ \\
 Cauchy-Schwarz: $|E(X,Y)|^2 \leq E(X^2) E(Y^2)$ 
 
-\subsection*{Regularized regression}
-Error: $\hat{R}(w) = \sum \limits_{i=1}^n (y_i - w^Tx_i)^2 + \lambda ||w||_2^2$ (Ridge) \\
-Closed form: $w^*=(X^T X + \lambda I)^{-1} X^T y$ (Ridge)\\
-%Grad: $\nabla_w \hat{R}(w) = -2 \sum_{i=1}^n (y_i-w^T x_i) \cdot x_i + 2 \lambda w$\\
-{\small{} Shrinkage:} $Xw^*{=}\sum_{j=1}^{d} u_j\frac{\sigma_j^2}{\sigma_j^2+\lambda}u_j^Ty$, $X{=}U\Sigma V^T$ 
-LASSO: $w^* = \underset{w}{\operatorname{argmin}} \sum \limits_{i=1}^n (y_i - w^Tx_i)^2 + \lambda ||w||_1$
+\textbf{Gauss-Markov}: ordinary lsq. estimator $\hat{\beta}$ has least var. among all unbiased estimators \\
+$\Tilde{\beta} = c \cdot \hat{\beta} \Rightarrow \forall a \in \mathds{R}^d: Var[a^\top \Tilde{\beta}] \geq Var[a^\top \hat{\beta}]$
 
-\subsection*{Bayesian linear regression}
+\subsection*{Regularized regression}
+$\varepsilon_{ridge} = (y - X^\top \beta)^\top (y - X^\top \beta) + \lambda ||\beta||_2^2$ \\
+$\Rightarrow \hat{\beta} = (X^\top X + \lambda I)^{-1} X^\top y$ {\tiny closed-form}\\
+%Grad: $\nabla_w \hat{R}(w) = -2 \sum_{i=1}^n (y_i-w^T x_i) \cdot x_i + 2 \lambda w$\\
+Shrinkage: $Xw^*{=}\sum_{j=1}^{d} u_j\frac{\sigma_j^2}{\sigma_j^2+\lambda}u_j^Ty$, $X{=}U\Sigma V^T$ 
+$\varepsilon_{lasso} = (y - X^\top \beta)^\top (y - X^\top \beta) + \lambda ||\beta||_1$ \\
+%LASSO: $w^* = \underset{w}{\operatorname{argmin}} \sum \limits_{i=1}^n (y_i - w^Tx_i)^2 + \lambda ||w||_1$
+
+\subsection*{Bayesian linear regression (TODO: rework)}
 	Model:  \= $y = X^T \beta + \epsilon$, with $\epsilon \sim
 	\mathcal{N}(\epsilon | 0, \sigma^2 I)$ or 
 	\> $P(y | X, \beta, \sigma) = \mathcal{N}(y | X^T \beta , \sigma^2 I)$ 
@@ -44,8 +67,8 @@ Var$[\hat{f}(x)] = \frac{1}{B^2}\sum_i$ Var$[\hat{f}_i(x)]
 % \subsection*{Smoothing Splines}
 % $RSS(f,\lambda) = \sum\limits_{i=1}^n (y_i - f(x_i))^2 + \lambda  \int (f''(x))^2dx$\\
 
-\subsection*{RSS Estimator}
-$\hat{\beta} \sim \mathcal{N}(\beta,(X^TX)^{-1}\sigma^2)$.
+%\subsection*{RSS Estimator}
+%$\hat{\beta} \sim \mathcal{N}(\beta,(X^TX)^{-1}\sigma^2)$.
 %\textbf{Unbiasedness}: $\mathbb{E}[\hat{\beta}] = \mathbb{E}[(X^TX)^{-1}X^Ty] = (X^TX)^{-1}X^T\mathbb{E}[X\beta+\epsilon] = (X^TX)^{-1}(X^TX)\beta+X^T\mathbb{E}[\epsilon] = \beta + 0$
 %\textbf{Variance of} $a^T\hat{\beta}$: $\mathbb{V}(a^T(X^TX)^{-1}X^T(X\beta + \epsilon)) = \mathbb{V}(a^T\beta) + \mathbb{E}(a^T(X^TX)^{-1}X^T\epsilon\epsilon^TX(X^TX)^{-1}a) = \sigma^2 a^T(X^TX)^{-1}a$ 
 
@@ -82,6 +105,7 @@ $\\
 % $= \mathbb{E}_{x,y}[(y-w^Tx)^2]$
 
 
+\begin{comment}
 \subsection*{Ridge Parametric to nonparametric}
 Ansatz: $w=\sum_i \alpha_i x$\\
 $w^* = \underset{w}{\operatorname{argmin}} \sum_i (w^Tx_i-y_i)^2 + \lambda ||w||_2^2$ = \\
@@ -90,3 +114,4 @@ $= {\operatorname{argmin}}_{\alpha_{1:n}} \sum_{i=1}^n (\alpha^T K_i - y_i)^2 + 
 $= {\operatorname{argmin}}_{\alpha} ||\alpha^T K -y||_2^2 + \lambda \alpha^T K \alpha$\\
 Closed form: $\alpha^* = (K+\lambda I)^{-1} y$\\
 Prediction: $y^*= w^{*T} x = \sum_{i=1}^n \alpha_i^* k(x_i,x)$
+\end{comment}
